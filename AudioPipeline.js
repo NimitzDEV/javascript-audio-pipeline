@@ -1,6 +1,6 @@
 /**
  * AudioPipeline
- * 
+ *
  * @author NimitzDEV
  * @description Simple audio pipeline build upon Web Audio API
  * @name AudioPipeline
@@ -16,7 +16,7 @@ export default class AudioPipeline {
 
   /**
    * Decode ArrayBuffer to audio stream and load into audio context
-   * @param {ArrayBuffer} buffer 
+   * @param {ArrayBuffer} buffer
    */
   loadArrayBuffer(buffer) {
     return new Promise((resolve, reject) => {
@@ -30,8 +30,8 @@ export default class AudioPipeline {
 
   /**
    * Call actions on source
-   * @param {String} action 
-   * @param {Any} params 
+   * @param {String} action
+   * @param {Any} params
    */
   control(action, params) {
     this.source[action](params);
@@ -56,12 +56,12 @@ export default class AudioPipeline {
   }
 
   /**
-   * Add new AudioNode, if reconnect set to true, 
+   * Add new AudioNode, if reconnect set to true,
    * will reconnect AudioNodes between the new one.
-   * reconnect param is useful when you playing audio. 
-   * @param {AudioNode} node 
-   * @param {Number} position 
-   * @param {Boolean} reconnect 
+   * reconnect param is useful when you playing audio.
+   * @param {AudioNode} node
+   * @param {Number} position
+   * @param {Boolean} reconnect
    */
   addNode(node, position, reconnect = false) {
     if (reconnect && this.nodes.length) {
@@ -77,7 +77,7 @@ export default class AudioPipeline {
       if (position === 0) node.connect(this.nodes[0]);
 
       if (position === this.nodes.length)
-        this.nodes[this.nodes.length].connect(node);
+        this.nodes[this.nodes.length - 1].connect(node);
     }
 
     if (typeof position !== 'number') position = this.nodes.length;
@@ -88,23 +88,27 @@ export default class AudioPipeline {
    * Delete a specific AudioNode, if reconnect set to true,
    * will reconnect AudioNodes between the deleted one.
    * reconnect param is useful when you playing audio.
-   * @param {*} position 
-   * @param {*} reconnect 
+   * @param {*} position
+   * @param {*} reconnect
    */
   deleteNode(position, reconnect = false) {
-    if (typeof position === 'number' && position >= this.nodes.length - 1)
+    if (typeof position !== 'number')
+      return false;
+    if (position > this.nodes.length - 1)
       return false;
 
     if (reconnect && this.nodes.length > 1) {
       position < 0 && (position = 0);
 
-      if (position !== 0) {
+      if (position !== 0 && position < this.nodes.length - 1) {
         this.nodes[position].disconnect(this.nodes[position + 1]);
         this.nodes[position - 1].disconnect(this.nodes[position]);
         this.nodes[position - 1].connect(this.nodes[position + 1]);
       }
 
       if (position === 0) this.nodes[0].disconnect(this.nodes[1]);
+      if (position === this.nodes.length - 1)
+        this.nodes[position - 1].disconnect(this.nodes[position]);
     }
 
     this.nodes.splice(position, 1);
@@ -112,7 +116,7 @@ export default class AudioPipeline {
 
   /**
    * Get specific AudioNode reference in AudioNode list
-   * @param {Number} position 
+   * @param {Number} position
    */
   getNode(position) {
     position = position < 0 ? 0 : position;
@@ -129,7 +133,7 @@ export default class AudioPipeline {
 
   /**
    * Create a new BiquadFilterNode
-   * @param {String, Number} type 
+   * @param {String, Number} type
    */
   getBiquadFilterNode(type) {
     const bf = this.audioCtx.createBiquadFilter();
@@ -139,7 +143,7 @@ export default class AudioPipeline {
 
   /**
    * Create a new OscillatorNode
-   * @param {String} type 
+   * @param {String} type
    */
   getOscillatorNode(type) {
     const on = this.audioCtx.createOscillator();
@@ -149,7 +153,7 @@ export default class AudioPipeline {
 
   /**
    * Create a new GainNode
-   * @param {Number} gain 
+   * @param {Number} gain
    */
   getGainNode(gain) {
     gain = gain || 0;
@@ -160,7 +164,7 @@ export default class AudioPipeline {
 
   /**
    * Create a new DelayNode
-   * @param {Number} delay 
+   * @param {Number} delay
    */
   getDelayNode(delay) {
     delay = delay || 0;
@@ -178,9 +182,9 @@ export default class AudioPipeline {
 
   /**
    * Create a new OscillatorNode with PeriodicWave
-   * @param {Float32Array} real 
-   * @param {Float32Array} imag 
-   * @param {Object} constraints 
+   * @param {Float32Array} real
+   * @param {Float32Array} imag
+   * @param {Object} constraints
    */
   getPeriodicWave(real, imag, constraints = {}) {
     const o = this.audioCtx.createOscillator();
