@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>AudioPipeline Example</title>
+  <style>
+    * {
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body, html {
+      background: #263238;
+      color: #fff;
+    }
+
+    .pipeline {
+      line-height: 3rem;
+      margin: 1rem 0;
+    } 
+
+    .pipeline .section {
+      background: #9B7FE6;
+      display: inline-block;
+      color: #fff;
+      height: 3rem;
+      position: relative;
+      padding: 0 1rem;
+      margin-right: 2rem;
+      margin-bottom: 1rem;
+      cursor: pointer;
+    }
+
+    .pipeline .section.arrow::after {
+      display: block;
+      content: ' ';
+      position: absolute;
+      border: 1.5em solid transparent;
+      height: 0;
+      width: 0;
+      left: 100%;
+      top: 50%;
+      margin-top: -1.5rem;
+      border-left-color:  #9B7FE6;
+    }
+
+    .pipeline .section.list {
+      margin-right: 1rem;
+    }
+
+    .pipeline .section.green { background: #2E7D32; }
+    .pipeline .section.green::after { border-left-color: #2E7D32; }
+    .pipeline .section.red { background: #F4511E; }
+    .pipeline .section.red::after { border-left-color: #F4511E; }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+</body>
+
+<script type="x-template" id="app-tpl">
+  <div class="wrapper">
+    <div class="pipeline" v-show="pipeline.length">
+      <h2>Click to delete</h2>
+      <span v-for="(section, index) in pipeline" :key="section.name" :class="section.style || ''" class="section arrow" @click="deletePipeline(index)">{{ section.name }}</span>
+    </div>
+    <div class="open-file">
+      {{ audioLoading && !audioReady ? 'Loading audio...' : '' }}
+      {{ audioReady ? 'Opened' : 'open a audio file:'}} <input type="file" ref="file" v-show="!audioReady && !audioLoading" />
+    </div>
+    <div class="pipeline" v-show="audioReady">
+      Click to add Node to pipeline, after that, click connect button.<br />
+      Using getNode to get a specify AudioNode, and you can change settings dynamically while playing <br />
+      <span v-for="(section, index) in type" :key="section.name" :class="section.style || ''" class="section list" @click="addPipeline(index)">{{ section.name }}</span>
+      <br />
+      <button @click="connect">Connect</button>
+      <button @click="play">Play</button>
+    </div>
+  </div>
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="./filereader.js"></script>
+<script src="../dist/AudioPipeline.js"></script>
+<script src="./app.js"></script>
+</html>
