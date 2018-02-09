@@ -7,7 +7,7 @@ AudioPipeline is a simple class that wraps basic Web Audio APIs, making connect 
 ```javascript
 // init AudioPipeline
 import AudioPipeline from './AudioPipeline';
-const AP new AudioPipeline();
+const AP = new AudioPipeline();
 
 // pass ArrayBuffer to loadArrayBuffer to init AudioContext
 await AP.loadArrayBuffer(buffer);

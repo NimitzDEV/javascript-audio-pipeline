@@ -16,5 +16,22 @@
   },
   "dependencies": {
     "rollup-plugin-uglify": "^3.0.0"
-  }
+  },
+  "directories": {
+    "example": "examples"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NimitzDEV/javascript-audio-pipeline.git"
+  },
+  "keywords": [
+    "webaudioapi",
+    "web",
+    "audio",
+    "api"
+  ],
+  "bugs": {
+    "url": "https://github.com/NimitzDEV/javascript-audio-pipeline/issues"
+  },
+  "homepage": "https://github.com/NimitzDEV/javascript-audio-pipeline#readme"
 }
