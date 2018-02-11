@@ -2,6 +2,14 @@
 
 AudioPipeline is a simple class that wraps basic Web Audio APIs, making connect and modify AudioNodes more easily.
 
+## Install
+
+install using npm or yarn
+
+`npm i audio-pipeline`
+
+`yarn add audio-pipeline`
+
 ## Basic Usage
 
 ```javascript
