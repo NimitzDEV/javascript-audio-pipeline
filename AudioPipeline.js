@@ -81,7 +81,7 @@ export default class AudioPipeline {
     }
 
     if (typeof position !== 'number') position = this.nodes.length;
-    this.nodes.splice(position, 0, node);
+    return this.nodes.splice(position, 0, node);
   }
 
   /**
@@ -111,7 +111,38 @@ export default class AudioPipeline {
         this.nodes[position - 1].disconnect(this.nodes[position]);
     }
 
-    this.nodes.splice(position, 1);
+    return this.nodes.splice(position, 1);
+  }
+
+  /**
+   * Switch the position of two AudioNodes, if reconnect set to true
+   * will reconnect AudioNodes between those two AudioNodes.
+   * reconnect param is useful when you playing audio.
+   * @param {Number} from 
+   * @param {Number} to 
+   * @param {Boolean} reconnect 
+   */
+  switchNodes(from, to, reconnect = false) {
+    if (typeof from !== 'number' || typeof to !== 'number') 
+      return false;
+    if (from > this.nodes.length - 1 || to > this.nodes.length - 1)
+      return false;
+    
+    from < 0 && (from = 0);
+    to < 0 && (to = 0);
+
+    const switchFromNode = this.deleteNode(from, reconnect);
+    const switchToNode = this.deleteNode(to, reconnect);
+
+    if (from > to) {
+      this.addNode(switchFromNode[0], to, reconnect);
+      this.addNode(switchToNode[0], from, reconnect);
+    } else {
+      this.addNode(switchToNode[0], from, reconnect);
+      this.addNode(switchFromNode[0], to, reconnect);
+    }
+
+    return false;
   }
 
   /**
