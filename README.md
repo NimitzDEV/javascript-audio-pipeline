@@ -3,6 +3,7 @@
 AudioPipeline is a simple class that wraps basic Web Audio APIs, making connect and modify AudioNodes more easily.
 
 ## Install
+[![NPM](https://nodei.co/npm/audio-pipeline.png)](https://npmjs.org/package/audio-pipeline)
 
 install using npm or yarn
 
