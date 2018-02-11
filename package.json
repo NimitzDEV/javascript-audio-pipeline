@@ -1,6 +1,6 @@
 {
   "name": "audio-pipeline",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "AudioPipeline.js",
   "license": "MIT",
   "description": "Simple audio pipeline build upon Web Audio API",
