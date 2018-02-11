@@ -9,13 +9,11 @@
     "babel-core": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "rollup": "^0.55.3",
-    "rollup-plugin-babel": "^3.0.3"
+    "rollup-plugin-babel": "^3.0.3",
+    "rollup-plugin-uglify": "^3.0.0"
   },
   "scripts": {
     "build": "node ./build.js"
-  },
-  "dependencies": {
-    "rollup-plugin-uglify": "^3.0.0"
   },
   "directories": {
     "example": "examples"
