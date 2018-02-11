@@ -99,6 +99,13 @@ new Vue({
       this.pipeline.splice(index, 1);
       this.audioPipeline.deleteNode(index, this.playing);
     },
+    switchNodes(index) {
+      this.audioPipeline.switchNodes(index, index - 1, true);
+      const sourceNode = this.pipeline.splice(index, 1);
+      const destinationNode = this.pipeline.splice(index - 1, 1);
+      this.pipeline.splice(index - 1, 0, sourceNode[0]);
+      this.pipeline.splice(index, 0, destinationNode[0]);
+    },
     play() {
       this.audioPipeline.control('start', 0);
       this.playing = true;

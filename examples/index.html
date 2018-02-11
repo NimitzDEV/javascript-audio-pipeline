@@ -63,11 +63,15 @@
   <div class="wrapper">
     <div class="pipeline" v-show="pipeline.length">
       <h2>Click to delete</h2>
-      <span v-for="(section, index) in pipeline" :key="section.name" :class="section.style || ''" class="section arrow" @click="deletePipeline(index)">{{ section.name }}</span>
+      <span v-for="(section, index) in pipeline" :key="section.name" :class="section.style || ''" class="section arrow" @click="deletePipeline(index)">
+        <button v-show="index > 1 && pipeline.length > 3 && index !== pipeline.length - 1" @click.stop="switchNodes(index)"><=></button>
+        {{ section.name }}
+      </span>
     </div>
     <div class="open-file">
       {{ audioLoading && !audioReady ? 'Loading audio...' : '' }}
-      {{ audioReady ? 'Opened' : 'open a audio file:'}} <input type="file" ref="file" v-show="!audioReady && !audioLoading" />
+      {{ audioReady ? 'Opened' : 'open a audio file:'}} 
+      <input type="file" ref="file" v-show="!audioReady && !audioLoading" />
     </div>
     <div class="pipeline" v-show="audioReady">
       Click to add Node to pipeline, after that, click connect button.<br />
