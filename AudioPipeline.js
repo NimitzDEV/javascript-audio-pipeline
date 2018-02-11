@@ -33,8 +33,14 @@ export default class AudioPipeline {
    * @param {String} action
    * @param {Any} params
    */
-  control(action, params) {
-    this.source[action](params);
+  control() {
+    const args = Array.prototype.slice.call(arguments);
+    const action = args[0];
+    args.shift(); 
+    this.source[action].apply(
+      this.source,
+      args
+    );
   }
 
   /**
@@ -92,10 +98,8 @@ export default class AudioPipeline {
    * @param {*} reconnect
    */
   deleteNode(position, reconnect = false) {
-    if (typeof position !== 'number')
-      return false;
-    if (position > this.nodes.length - 1)
-      return false;
+    if (typeof position !== 'number') return false;
+    if (position > this.nodes.length - 1) return false;
 
     if (reconnect && this.nodes.length > 1) {
       position < 0 && (position = 0);
@@ -118,16 +122,15 @@ export default class AudioPipeline {
    * Switch the position of two AudioNodes, if reconnect set to true
    * will reconnect AudioNodes between those two AudioNodes.
    * reconnect param is useful when you playing audio.
-   * @param {Number} from 
-   * @param {Number} to 
-   * @param {Boolean} reconnect 
+   * @param {Number} from
+   * @param {Number} to
+   * @param {Boolean} reconnect
    */
   switchNodes(from, to, reconnect = false) {
-    if (typeof from !== 'number' || typeof to !== 'number') 
-      return false;
+    if (typeof from !== 'number' || typeof to !== 'number') return false;
     if (from > this.nodes.length - 1 || to > this.nodes.length - 1)
       return false;
-    
+
     from < 0 && (from = 0);
     to < 0 && (to = 0);
 
